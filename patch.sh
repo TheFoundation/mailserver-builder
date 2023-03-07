@@ -9,7 +9,7 @@
         (   
             head -n $insertpoint Dockerfile
             echo 'ARG APT_PROXY='$APT_PROXY
-            echo 'RUN apt-get update && apt-get install -y ca-certificates && apt-get clean all'
+            echo 'RUN apt-get update && apt-get install -y --no-install-recommends openssl socat ca-certificates curl && apt-get clean all'
             echo 'RUN sed "s~http://~http://"$APT_PROXY"/~g" -i /etc/apt/sources.list && apt update'
             tail -n +$((1+$insertpoint)) Dockerfile
         ) > Dockerfile.tmp
@@ -21,8 +21,8 @@
 
         (   
             head -n $insertpoint Dockerfile
-            echo 'RUN $(curl -s https://github.com/noqcks/gucci/releases/download/$(cat Dockerfile|grep GUCCI_VER=|grep ARG|cut -d"=" -f2)/checksums.txt -kL |grep linux-arm64|cut -d" " -f1 |cut -f1) > /etc/GUCCI_SHA256_HASH-arm64 '
-            echo 'RUN $(curl -s https://github.com/noqcks/gucci/releases/download/$(cat Dockerfile|grep GUCCI_VER=|grep ARG|cut -d"=" -f2)/checksums.txt -kL |grep linux-amd64|cut -d" " -f1 |cut -f1) > /etc/GUCCI_SHA256_HASH-amd64 '
+            echo 'RUN curl -s https://github.com/noqcks/gucci/releases/download/$(cat Dockerfile|grep GUCCI_VER=|grep ARG|cut -d"=" -f2)/checksums.txt -kL |grep linux-arm64|cut -d" " -f1 |cut -f1| tee /etc/GUCCI_SHA256_HASH-arm64 '
+            echo 'RUN curl -s https://github.com/noqcks/gucci/releases/download/$(cat Dockerfile|grep GUCCI_VER=|grep ARG|cut -d"=" -f2)/checksums.txt -kL |grep linux-amd64|cut -d" " -f1 |cut -f1 | tee /etc/GUCCI_SHA256_HASH-amd64 '
             tail -n +$((1+$insertpoint)) Dockerfile
         ) > Dockerfile.tmp
         mv  Dockerfile.tmp Dockerfile
