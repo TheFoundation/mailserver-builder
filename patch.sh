@@ -34,4 +34,4 @@
         sed 's/.\+libhyperscan.\+//g' Dockerfile -i
         sed 's/ENABLE_HYPERSCAN=ON/ENABLE_HYPERSCAN=OFF/g' -i Dockerfile 
         sed 's/GUCCI_BINARY=/cat  \/etc\/GUCCI_SHA256_HASH-$( uname -m|sed s\/x86_64\/amd64\/|sed s\/aarch64\/arm64\/ ) >  \/etc\/GUCCI_SHA256_HASH \&\& echo ARCH $MYARCH \&\& varname=GUCCI_SHA256_HASH_$MYARCH \&\& GUCCI_SHA256_HASH_EXPECTED=${!varname} \&\& echo expecting $GUCCI_SHA256_HASH_EXPECTED  \&\& GUCCI_BINARY=/g'  Dockerfile -i
-        sed 's~^ && cd /tmp.\+~ \&\& echo BUILD_OK\n RUN cd /tmp \\~g' -i Dockerfile
+        #sed 's~^ && cd /tmp.\+~ \&\& echo BUILD_OK\n RUN cd /tmp \\~g' -i Dockerfile
