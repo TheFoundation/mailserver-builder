@@ -1,0 +1,3 @@
+[submodule "debian-mail-overlay"]
+	path = debian-mail-overlay
+	url = https://github.com/mailserver2/debian-mail-overlay.git
