@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 #!/bin/bash 
 #test -e debian-mail-overlay.custom/.patched || rm -rf debian-mail-overlay.custom
-test -e debian-mail-overlay.custom && rm -rf debian-mail-overlay.custom
+#test -e debian-mail-overlay.custom && rm -rf debian-mail-overlay.custom
 cp -aurv debian-mail-overlay/ debian-mail-overlay.custom
 cd  debian-mail-overlay.custom && (
-=======
-       #!/bin/bash 
-
-        test -e debian-mail-overlay.custom && rm -rf debian-mail-overlay.custom
-        cp -aurv debian-mail-overlay/ debian-mail-overlay.custom
-        cd  debian-mail-overlay.custom
         [[ -z "$APT_PROXY" ]] ||  (  
         insertpoint=$(nl Dockerfile |grep "ARG BUILD_CORES"|sed 's/\t/ /g;s/ \+/ /g;s/^ \+//g'|cut -d" " -f1)
         echo patching proxy at LINE $insertpoint
@@ -33,7 +26,6 @@ cd  debian-mail-overlay.custom && (
             tail -n +$((1+$insertpoint)) Dockerfile
         ) > Dockerfile.tmp
         mv  Dockerfile.tmp Dockerfile
->>>>>>> parent of 2b71a86 (.)
 
 
 insertpoint=$(nl Dockerfile |grep "ARG BUILD_CORES"|sed 's/\t/ /g;s/ \+/ /g;s/^ \+//g'|cut -d" " -f1)
