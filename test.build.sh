@@ -1,4 +1,5 @@
 #!/bin/bash
+<<<<<<< HEAD
 
 test -e  /tmp/buildcache_persist || mkdir /tmp/buildcache_persist
 
@@ -161,3 +162,7 @@ docker buildx build  $BUILDX_OUT  --pull --push --progress plain --network=host 
      )
 
 ##    echo "${IMAGETAG_SHORT}" |grep -e baseimage -e base-image &&      
+=======
+teste -e debian-mail-overlay||git submodule update --init
+( bash patch.sh ; cd debian-mail-overlay.custom/;sed 's~^ && cd /tmp.\+~ \&\& echo BUILD_OK\n RUN cd /tmp \\~g' -i Dockerfile;time docker build .)
+>>>>>>> parent of 2b71a86 (.)

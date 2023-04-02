@@ -1,8 +1,39 @@
+<<<<<<< HEAD
 #!/bin/bash 
 #test -e debian-mail-overlay.custom/.patched || rm -rf debian-mail-overlay.custom
 test -e debian-mail-overlay.custom && rm -rf debian-mail-overlay.custom
 cp -aurv debian-mail-overlay/ debian-mail-overlay.custom
 cd  debian-mail-overlay.custom && (
+=======
+       #!/bin/bash 
+
+        test -e debian-mail-overlay.custom && rm -rf debian-mail-overlay.custom
+        cp -aurv debian-mail-overlay/ debian-mail-overlay.custom
+        cd  debian-mail-overlay.custom
+        [[ -z "$APT_PROXY" ]] ||  (  
+        insertpoint=$(nl Dockerfile |grep "ARG BUILD_CORES"|sed 's/\t/ /g;s/ \+/ /g;s/^ \+//g'|cut -d" " -f1)
+        echo patching proxy at LINE $insertpoint
+        (   
+            head -n $insertpoint Dockerfile
+            echo 'ARG APT_PROXY='$APT_PROXY
+            echo 'RUN apt-get update && apt-get install -y ca-certificates && apt-get clean all'
+            echo 'RUN sed "s~http://~http://"$APT_PROXY"/~g" -i /etc/apt/sources.list && apt update'
+            tail -n +$((1+$insertpoint)) Dockerfile
+        ) > Dockerfile.tmp
+        mv  Dockerfile.tmp Dockerfile
+        )
+
+        insertpoint=$(nl Dockerfile |grep "ARG BUILD_CORES"|sed 's/\t/ /g;s/ \+/ /g;s/^ \+//g'|cut -d" " -f1)
+        echo patching arm64 gucci at LINE $insertpoint
+
+        (   
+            head -n $insertpoint Dockerfile
+            echo 'RUN $(curl -s https://github.com/noqcks/gucci/releases/download/$(cat Dockerfile|grep GUCCI_VER=|grep ARG|cut -d"=" -f2)/checksums.txt -kL |grep linux-arm64|cut -d" " -f1 |cut -f1) > /etc/GUCCI_SHA256_HASH-arm64 '
+            echo 'RUN $(curl -s https://github.com/noqcks/gucci/releases/download/$(cat Dockerfile|grep GUCCI_VER=|grep ARG|cut -d"=" -f2)/checksums.txt -kL |grep linux-amd64|cut -d" " -f1 |cut -f1) > /etc/GUCCI_SHA256_HASH-amd64 '
+            tail -n +$((1+$insertpoint)) Dockerfile
+        ) > Dockerfile.tmp
+        mv  Dockerfile.tmp Dockerfile
+>>>>>>> parent of 2b71a86 (.)
 
 
 insertpoint=$(nl Dockerfile |grep "ARG BUILD_CORES"|sed 's/\t/ /g;s/ \+/ /g;s/^ \+//g'|cut -d" " -f1)
